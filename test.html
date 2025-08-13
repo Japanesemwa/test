@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>inf0sec</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* 🖤 Full Black & White Theme CSS Included */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      background: black;
+    }
+    #static-overlay {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9998;
+      background: transparent;
+      mix-blend-mode: screen;
+      opacity: 0.1;
+      animation: staticNoise 0.2s steps(10) infinite;
+      background-image:
+        repeating-radial-gradient(circle, #999 0px, #999 1px, transparent 2px, transparent 3px),
+        repeating-linear-gradient(45deg, #bbb 0px, #bbb 1px, transparent 2px, transparent 3px);
+      background-size: 50px 50px, 10px 10px;
+    }
+    @keyframes staticNoise {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
+    .intro-screen {
+      background: black;
+      color: white;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 9999;
+      position: fixed;
+      top: 0;
+      left: 0;
+      font-family: 'Press Start 2P', monospace;
+      text-align: center;
+      transition: all 1s ease;
+    }
+    .intro-screen.fade-out {
+      opacity: 0;
+      backdrop-filter: blur(30px);
+      pointer-events: none;
+    }
+    .intro-screen small {
+      font-size: 12px;
+      margin-top: 12px;
+    }
+    .site-content {
+      background: url('lainsigma.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 60px;
+      animation: fadeIn 1.5s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; filter: blur(10px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+    .pixel-header {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 36px;
+      color: white;
+      margin-bottom: 40px;
+      text-align: center;
+      text-shadow: 0 0 10px #ffffffaa;
+    }
+    .container {
+      display: flex;
+      gap: 24px;
+      flex-wrap: nowrap;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-direction: column;
+      align-items: center;
+      max-width: 380px;
+    }
+    .flip-card {
+      background: transparent;
+      width: 450px;
+      height: 560px;
+      perspective: 1000px;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: box-shadow 0.3s ease;
+      position: relative;
+    }
+    .flip-card:hover {
+      box-shadow: 0 0 20px #ffffffaa, 0 0 30px #ffffff88 inset;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      border-radius: 20px;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid #ffffffcc;
+      color: #eeeeee;
+      text-shadow: 0 0 4px #ffffffcc;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+      font-size: 15px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .avatar {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 24px;
+      box-shadow: 0 0 16px #ffffffcc;
+      border: 3px solid #ffffffcc;
+    }
+    .flip-card-front .username {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #ffffff;
+      text-shadow: 0 0 12px #ffffffaa;
+    }
+    .flip-card-front .status {
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+      color: #dddddd;
+      text-shadow: 0 0 8px #ccccccaa;
+    }
+    .social-icons {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 14px;
+    }
+    .discord-button {
+      background: none;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 16px;
+      color: #ffffff;
+      font-size: 36px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      box-shadow: 0 0 12px #ffffffaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .discord-button:hover {
+      color: #eeeeee;
+      box-shadow: 0 0 14px #ffffffbb;
+    }
+    #audio-controls {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #111111cc;
+      padding: 6px 10px;
+      border-radius: 14px;
+      box-shadow: 0 0 10px #ffffffbb;
+      z-index: 10;
+    }
+    #mute-btn {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      z-index: 11;
+    }
+    #mute-btn i {
+      pointer-events: none;
+      filter: drop-shadow(0 0 2px #ffffff);
+    }
+    #volume-slider {
+      -webkit-appearance: none;
+      width: 110px;
+      height: 8px;
+      background: #ffffffcc;
+      border-radius: 6px;
+      cursor: pointer;
+      outline: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #audio-controls:hover #volume-slider {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #volume-slider::-webkit-slider-thumb,
+    #volume-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ffffffaa;
+      border: none;
+      margin-top: -5px;
+    }
+    .about-hint {
+      font-size: 16px;
+      color: #cccccc;
+      margin-top: 14px;
+      font-family: 'Press Start 2P', monospace;
+      text-align: center;
+      text-shadow: 0 0 6px #ffffffbb;
+    }
+    #page-views-container {
+      margin-top: 20px;
+      font-family: 'Poppins', sans-serif;
+      color: #ffffff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      justify-content: center;
+      text-shadow: 0 0 5px #ffffffaa;
+      transition: margin-top 0.3s ease;
+    }
+    #page-views-container i {
+      font-size: 24px;
+    }
+    @media (max-width: 600px) {
+      .flip-card {
+        width: 90vw;
+        height: auto;
+      }
+      .avatar {
+        width: 120px;
+        height: 120px;
+      }
+      #audio-controls {
+        width: 85vw;
+        justify-content: space-between;
+      }
+    }
+  </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+  <div id="static-overlay"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="chrollo.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div class="intro-screen" id="intro">
+    <div>welcome to inf0sec.net</div>
+    <small>click to enter the cyber verse</small>
+  </div>
+
+  <div class="site-content" id="mainContent">
+    <div class="pixel-header">Contact to join.</div>
+    <div class="container">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div id="audio-controls">
+              <button id="mute-btn" aria-label="Toggle mute">
+                <i class="fas fa-volume-up"></i>
+              </button>
+              <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" />
+            </div>
+            <img src="chrollo.png" alt="Founder" class="avatar" />
+            <div class="username">inf0sec</div>
+            <div class="status">founder</div>
+            <div class="social-icons">
+              <a class="discord-button" href="https://discord.com/users/1356547477448167505" target="_blank">
+                <i class="fab fa-discord"></i>
+              </a>
+              <a class="discord-button" href="https://t.me/overstimulations" target="_blank">
+                <i class="fab fa-telegram"></i>
+              </a>
+            </div>
+            <div class="about-hint">click for about me</div>
+            <div id="page-views-container" title="Unique site visitors">
+              <i class="fas fa-eye"></i>
+              <span id="page-views-number">...</span>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            old infinity recursion member founded in 2021 by evelyn, inf0sec owner, in com since 2015-2016.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const intro = document.getElementById("intro");
+    const main = document.getElementById("mainContent");
+    const audio = document.getElementById("bgMusic");
+
+    intro.addEventListener("click", () => {
+      intro.classList.add("fade-out");
+      audio.volume = 0.8;
+      audio.play();
+      setTimeout(() => {
+        intro.style.display = "none";
+        main.style.display = "flex";
+      }, 1000);
+    });
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "inf0sec-site.firebaseapp.com",
+      databaseURL: "https://inf0sec-site-default-rtdb.firebaseio.com",
+      projectId: "inf0sec-site",
+      storageBucket: "inf0sec-site.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const viewsRef = db.ref('views');
+
+    async function updatePageViews() {
+      const viewedKey = 'hasViewed_inf0sec';
+      const hasViewed = localStorage.getItem(viewedKey);
+
+      if (!hasViewed) {
+        await viewsRef.child('count').transaction(current => (current || 0) + 1);
+        await viewsRef.child('pageViews').transaction(current => (current || 0) + 1);
+        localStorage.setItem(viewedKey, 'true');
+      }
+
+      viewsRef.child('pageViews').once('value').then(snapshot => {
+        const count = snapshot.val() || 0;
+        document.getElementById('page-views-number').textContent = count;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', updatePageViews);
+
+    const muteBtn = document.getElementById("mute-btn");
+    const volumeSlider = document.getElementById("volume-slider");
+
+    audio.volume = parseFloat(volumeSlider.value);
+
+    function updateMuteIcon() {
+      muteBtn.innerHTML = audio.muted || audio.volume === 0
+        ? '<i class="fas fa-volume-mute"></i>'
+        : '<i class="fas fa-volume-up"></i>';
+    }
+
+    muteBtn.addEventListener("click", () => {
+      audio.muted = !audio.muted;
+      updateMuteIcon();
+      if (!audio.muted) {
+        volumeSlider.value = audio.volume;
+      }
+    });
+
+    volumeSlider.addEventListener("input", (e) => {
+      audio.volume = parseFloat(e.target.value);
+      audio.muted = audio.volume === 0;
+      updateMuteIcon();
+    });
+
+    updateMuteIcon();
+  </script>
+</body>
+</html>
